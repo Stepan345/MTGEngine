@@ -3,6 +3,12 @@ export interface powerTougness{
     power:number,
     tougness:number
 }
+export enum Trigger{
+    "enterTheBattlefield",
+    "otherETB",
+    "otherSpellCast",
+    "none"
+}
 export class Card{
     public types:string[]
     public name:string
@@ -36,19 +42,23 @@ export class Card{
         this.permanent = permanent
         this.owner = owner
         this.originalOwner = owner
-        
     }
     public otherETB(creature:Card){}
     public otherSpellCast(spell:Card){}
-    public triggeredAbility(number:number,targets:(Card|Player)[] = []){
+    public trigger(key:Trigger,source:Player|Card,targets:(Card|Player)[] = []){
 
     }
-    public landfall(){}
-    public whenAttached(target:(Card|Player)){}
-    public enterTheBattlefield(){}
+    private addTriggerToStack(key:Trigger,source:Player|Card,targets:(Card|Player)[] = []){
+        this.owner.game.stack.addToStack(this,true,targets,key)
+    }
+    public resolveTrigger(trigger:Trigger,targets:(Card|Player)[] = []){
+
+    }
     public spellAbility(targets:(Card|Player)[] = []){}
-    public leaveTheBattlefield(){}
     public isDrawn(){}
+    public play(targets:(Card|Player)[] = []){
+        this.owner.game.stack.addToStack(this,true,targets)
+    }
 
     public takeDamage(amount:number){
         this.powerTougness.tougness -= amount
