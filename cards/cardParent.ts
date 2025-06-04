@@ -14,11 +14,13 @@ export class Card{
     public originalOwner:Player
     public owner:Player
     public targetRange:number[]
+    public permanent:boolean
     public constructor(
         name:string,
         owner:Player,
         types:string[],
         manaCost:{w:number,u:number,b:number,r:number,g:number,c:number},
+        permanent:boolean,
         legendary:boolean = false,
         powerTougness:powerTougness = {power: NaN,tougness:NaN},
         modifiers:string[] = []
@@ -31,11 +33,13 @@ export class Card{
         this.initPowerTougness = powerTougness
         this.modifiers = [...modifiers]
         this.legendary = legendary
+        this.permanent = permanent
         this.owner = owner
         this.originalOwner = owner
+        
     }
-    public otherETB(){}
-    public otherSpellAbility(){}
+    public otherETB(creature:Card){}
+    public otherSpellCast(spell:Card){}
     public triggeredAbility(number:number,targets:(Card|Player)[] = []){
 
     }

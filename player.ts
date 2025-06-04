@@ -26,6 +26,8 @@ export class Player{
     public castSpell(cardID:number){
         let card:cards.Card = this.hand[cardID]
         if(card.types.includes("Land"))throw("Can't cast a Land")
+        this.hand.splice(cardID,1)
+        this.game.spellPlayed(card,this)
     }
     public playLand(cardID:number){
         let card:cards.Card = this.hand[cardID]
@@ -33,5 +35,8 @@ export class Player{
         if(this.landsLeft <= 0 )throw("You've already played all your land(s) for turn")
         
         
+    }
+    public pass(){
+        this.game.passPriority()
     }
 }
