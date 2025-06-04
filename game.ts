@@ -3,7 +3,7 @@ import { Deck } from "./deck"
 import { ManaPool } from "./manaPool"
 import { Player } from "./player"
 import { Stack } from "./stack"
-import { Trigger,Card } from "./cards/cardParent"
+import { Trigger,Card,Cards } from "./cards/cardParent"
 enum Phases{
     "Untap" = 0,
     "Up-keep" = 1,
@@ -30,9 +30,21 @@ export class Game{
     public battlefields:Card[][] = []
     public graveyards:Card[][] = []
     public exile:Card[][] = []
-    public constructor(players:number,life:number,decks:Card[][]){
+    public constructor(players:number,life:number,decks:[number,Cards][][]){
         for(let i = 0; i<players;i++){
-            this.players.push(new Player(life,new Deck(decks[i]),this))
+            
+            
+            let player:Player = new Player(life,this)
+            let cards:Card[] = []
+            decks[i].forEach(card => {
+                for(let j = 0;j < card[0];j++){
+                    cards.push(new card[1](player))
+                }
+            });
+            let deck:Deck = new Deck(cards)
+            player.init(deck)
+
+            this.players.push()
             this.battlefields.push([])
             this.graveyards.push([])
             this.exile.push([])

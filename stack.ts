@@ -1,6 +1,3 @@
-import { Deck } from "./deck"
-import * as cards from "./cards/cards"
-import { ManaPool } from "./manaPool"
 import { Player } from "./player"
 import { Game } from "./game"
 import { Trigger,Card } from "./cards/cardParent"

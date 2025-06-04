@@ -7,7 +7,8 @@ export class LightningBolt extends Card{
             "Lightning Bolt",
             owner,
             ["Instant"],
-            {w:0,u:0,b:0,r:1,g:0,c:0}
+            {w:0,u:0,b:0,r:1,g:0,c:0},
+            false
         )
         this.targetRange = [1]
     }

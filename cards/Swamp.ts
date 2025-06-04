@@ -1,17 +1,19 @@
 import {Card,powerTougness} from './cardParent.ts'
 import {Player} from "../player.ts"
+import { Colors } from '../manaPool.ts'
 export class Land extends Card{
     
     public constructor(owner:Player){
         super(
-            "Forest",
+            "Swamp",
             owner,
             ["Basic","Land","Forest"],
-            {w:0,u:0,b:0,r:0,g:0,c:0}
+            {w:0,u:0,b:0,r:0,g:0,c:0},
+            true
         )
         this.targetRange = [0]
     }
-    public triggeredAbility(number: number, targets?: Card[]): void {
-        this.owner.manaPool.add("g",1)
+    public manaAbility(): void {
+        this.owner.manaPool.add(Colors.black,1)
     }
 }

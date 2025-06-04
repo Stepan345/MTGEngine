@@ -1,3 +1,11 @@
+export enum Colors{
+    "white" = "w",
+    "blue" = "u",
+    "black" = "b",
+    "red" = "r",
+    "green" = "g",
+    "colorless" = "c"
+}
 export class ManaPool{
     private mana:{w:number,u:number,b:number,r:number,g:number,c:number} = {
         w:0,
@@ -14,7 +22,7 @@ export class ManaPool{
      * @param amount Amount of mana of that color to add, no negative numbers.
      * @param spellTypes Optional. If the mana can only be spent on a specific type of spell.
      */
-    public add(color:string,amount:number,spellTypes?:string[]){
+    public add(color:Colors,amount:number,spellTypes?:string[]){
         if(amount < 0)throw("Can not add negative mana")
         if(!Object.keys(this.mana).includes(color))throw("Invalid Mana Type")
         if(!spellTypes)this.mana[color]+=amount

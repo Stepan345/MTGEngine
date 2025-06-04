@@ -1,4 +1,5 @@
 import {Player} from "../player"
+import { Colors } from "../manaPool"
 export interface powerTougness{
     power:number,
     tougness:number
@@ -9,6 +10,7 @@ export enum Trigger{
     "otherSpellCast",
     "none"
 }
+export type Cards = new (...args: any[]) =>Card
 export class Card{
     public types:string[]
     public name:string
@@ -46,12 +48,21 @@ export class Card{
     public otherETB(creature:Card){}
     public otherSpellCast(spell:Card){}
     public trigger(key:Trigger,source:Player|Card,targets:(Card|Player)[] = []){
-
+        
     }
+    /**
+     * 
+     * @param key Type of trigger
+     * @param source The player that caused the trigger
+     * @param targets The targets for the trigger if any
+     */
     private addTriggerToStack(key:Trigger,source:Player|Card,targets:(Card|Player)[] = []){
         this.owner.game.stack.addToStack(this,true,targets,key)
     }
     public resolveTrigger(trigger:Trigger,targets:(Card|Player)[] = []){
+
+    }
+    public manaAbility(color?:Colors | undefined){
 
     }
     public spellAbility(targets:(Card|Player)[] = []){}

@@ -8,16 +8,21 @@ export class Player{
     public hand:Card[] = []
     public landsLeft = 1
     public poisonCounters:number
+    public deck:Deck
     public constructor(
         public health:number,
-        public deck:Deck,
         public game:Game,
         public maxHandSize:number = 7
         
     ){
         this.manaPool = new ManaPool
-        this.hand = [...this.hand,...this.deck.draw(maxHandSize)]
+        
     }
+    init(deck:Deck){
+        this.deck = deck 
+        this.hand = [...this.hand,...this.deck.draw(this.maxHandSize)]
+    }
+
     public draw(numberOfCards:number){
         this.hand = [...this.hand,...this.deck.draw(numberOfCards)]
     }
