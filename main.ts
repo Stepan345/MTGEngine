@@ -7,6 +7,6 @@ import { Trigger,Card,Cards } from "./cards/cardParent"
 import { Game } from "./game"
 
 let game = new Game(2,20,[
-    [[4,cards.LightningBolt],],
+    [[4,cards.LightningBolt],[4,cards.Mountain]],
     []
 ])

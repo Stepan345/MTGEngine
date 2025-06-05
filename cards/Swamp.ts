@@ -1,7 +1,7 @@
 import {Card,powerTougness} from './cardParent.ts'
 import {Player} from "../player.ts"
 import { Colors } from '../manaPool.ts'
-export class Land extends Card{
+export class Swamp extends Card{
     
     public constructor(owner:Player){
         super(

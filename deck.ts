@@ -2,8 +2,7 @@ import * as cards from "./cards/cards"
 import { Card } from "./cards/cardParent"
 export class Deck{
     public constructor(
-        private items:Card[],
-        private id:number
+        private items:Card[]
     ){
 
     }
@@ -16,10 +15,8 @@ export class Deck{
         return cards
     }
     private pop():Card{
-        let items:Card[] = JSON.parse(localStorage.getItem(this.id.toString())!) as Card[]
         let top:Card | undefined = this.items.shift()
         if(typeof top == "undefined")throw("Top of Deck is Undefined(Probably empty deck)")
-        
         return top
     }
     public scry(numberOfCards:number):Card[]{

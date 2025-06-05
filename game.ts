@@ -107,7 +107,6 @@ export class Game{
 
     //////////////////////
     public notifySpellPlayed(spell:Card){
-        if(!spell.modifiers.includes("Flash") && !spell.types.includes("Instant"))throw("Can only play this on your turn")
         this.battlefields.forEach(battlefield => {
             battlefield.forEach(card => {
                 card.trigger(Trigger.otherSpellCast,spell)
