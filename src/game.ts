@@ -19,7 +19,7 @@ export class Game{
     /**The current phase or step*/
     public currentPhase:Phases
     /**Turn number which increments every time the turn is passed */
-    public turn:number = 0
+    public turn:number = -1
     /**Player who's turn it is */
     public activePlayer:number = 0
     /** Player who can play spells and activate abilities */
@@ -30,10 +30,9 @@ export class Game{
     public battlefields:Card[][] = []
     public graveyards:Card[][] = []
     public exile:Card[][] = []
+    public stack:Stack
     public constructor(players:number,life:number,decks:[number,Cards][][]){
         for(let i = 0; i<players;i++){
-            
-            
             let player:Player = new Player(life,this)
             let cards:Card[] = []
             decks[i].forEach(card => {
@@ -43,39 +42,61 @@ export class Game{
             });
             let deck:Deck = new Deck(cards)
             player.init(deck)
-
             this.players.push()
             this.battlefields.push([])
             this.graveyards.push([])
             this.exile.push([])
         }
-        this.currentPhase = Phases.Untap
+        this.stack = new Stack(this)
     }
-    public stack:Stack = new Stack(this)
+    public startGame(){
+        this.turn++
+        this.currentPhase = Phases.Untap
+        this.phases[this.currentPhase]
+    }
+    
     /**An array containing the functions that are called at the start of each step or phase*/
     public phases:phase[] = [
         ()=>{//untap
-
+            this.battlefields[this.activePlayer].forEach(permanent => {
+                //phasing and untapping doesn't use the stack so it uses the resolveTrigger() method instead of trigger()
+                permanent.trigger(Trigger.phase,this.players[this.activePlayer])
+                permanent.trigger(Trigger.untap,this.players[this.activePlayer])
+            })
+            this.nextPhase()
         },
         ()=>{//upkeep
-
+            this.battlefields.forEach(battlefield =>{
+                battlefield.forEach(permanent => {
+                    permanent.trigger(Trigger.upkeep,this.players[this.activePlayer])
+                })
+            })
+            //add a special action for ordering triggers if there are any
+            this.priority = this.activePlayer
         },
         ()=>{//draw
             if(this.turn != 0){
                 this.players[this.activePlayer].draw(1)
             }
+            this.battlefields.forEach(battlefield =>{
+                battlefield.forEach(permanent => {
+                    permanent.trigger(Trigger.draw,this.players[this.activePlayer])
+                })
+            })
+            //add a special action for ordering triggers if there are any
+            this.priority = this.activePlayer
         },
         ()=>{//precombat
-
+            this.priority = this.activePlayer
         },
         ()=>{//combat
-
+            this.priority = this.activePlayer
         },
         ()=>{//postcombat
-
+            this.priority = this.activePlayer
         },
         ()=>{//end step
-
+            this.priority = this.activePlayer
         },
         ()=>{//clean up
             //pass turn

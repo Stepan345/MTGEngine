@@ -19,6 +19,9 @@ export class Deck{
         if(typeof top == "undefined")throw("Top of Deck is Undefined(Probably empty deck)")
         return top
     }
+    public shuffle(){
+        this.items.sort(()=>Math.random()-0.5)
+    }
     public scry(numberOfCards:number):Card[]{
         let cards:Card[] = []
         for(let i = 0;i<numberOfCards;i++){
