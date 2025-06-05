@@ -1,5 +1,5 @@
-import * as cards from "./cards/cards"
-import { Card } from "./cards/cardParent"
+import * as cards from "./cards/cards.js"
+import { Card } from "./cards/cardParent.js"
 export class Deck{
     public constructor(
         private items:Card[]

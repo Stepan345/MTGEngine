@@ -1,6 +1,0 @@
-export * from './lightningBolt'
-export * from './mountain'
-export * from './forest'
-export * from './plains'
-export * from './swamp'
-export * from './island'

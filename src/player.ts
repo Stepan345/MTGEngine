@@ -1,8 +1,8 @@
-import * as cards from "./cards/cards"
-import { Deck } from "./deck"
-import { ManaPool } from "./manaPool"
-import { Game } from "./game"
-import { Card,Trigger } from "./cards/cardParent"
+import * as cards from "./cards/cards.js"
+import { Deck } from "./deck.js"
+import { ManaPool } from "./manaPool.js"
+import { Game } from "./game.js"
+import { Card,Trigger } from "./cards/cardParent.js"
 export class Player{
     public manaPool:ManaPool
     public hand:Card[] = []
@@ -20,6 +20,7 @@ export class Player{
     }
     init(deck:Deck){
         this.deck = deck 
+        this.deck.shuffle()
         this.hand = [...this.hand,...this.deck.draw(this.maxHandSize)]
     }
 
@@ -40,7 +41,17 @@ export class Player{
         if(!card.types.includes("Land"))throw("Can't play a non-land")
         if(this.landsLeft <= 0 )throw("You've already played all your land(s) for turn")
         
-        
+    }
+    /**
+     * 
+     * @returns The names of all the cards in hand
+     */
+    public cardsInHand():string[]{
+        let hand:string[] = []
+        this.hand.forEach(card =>{
+            hand.push(card.name)
+        })
+        return hand
     }
     public pass(){
         this.game.passPriority()

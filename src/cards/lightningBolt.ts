@@ -1,5 +1,6 @@
-import {Card,powerTougness} from './cardParent'
-import {Player} from "../player"
+import {Card,powerTougness} from './cardParent.js'
+import {Player} from "../player.js"
+import { Colors } from '../manaPool.js'
 
 export class LightningBolt extends Card{
     public constructor(owner:Player){

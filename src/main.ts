@@ -1,9 +1,9 @@
 import * as cards from "./cards/cards.js"
-import { Deck } from "./deck"
-import { ManaPool } from "./manaPool"
+import { Deck } from "./deck.js"
+import { ManaPool } from "./manaPool.js"
 import { Player } from "./player.js"
-import { Stack } from "./stack"
-import { Trigger,Card,Cards } from "./cards/cardParent"
+import { Stack } from "./stack.js"
+import { Trigger,Card,Cards } from "./cards/cardParent.js"
 import { Game } from "./game.js"
 
 let game = new Game(2,20,[
@@ -14,12 +14,6 @@ let game = new Game(2,20,[
 let player1:Player = game.players[0]
 let player2:Player = game.players[1]
 console.log({
-    player1Hand: player1.hand,
-    player2Hand: player2.hand
+    player1Hand: player1.cardsInHand(),
+    player2Hand: player2.cardsInHand()
 })
-
-let counter:number = 0
-while(true){
-    console.log(counter)
-    counter++
-}

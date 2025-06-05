@@ -1,6 +1,6 @@
-import { Player } from "./player"
-import { Game } from "./game"
-import { Trigger,Card } from "./cards/cardParent"
+import { Player } from "./player.js"
+import { Game } from "./game.js"
+import { Trigger,Card } from "./cards/cardParent.js"
 
 export class Stack{//God help us all
     public items:[Card,boolean,Trigger,(Card | Player)[]][] = []

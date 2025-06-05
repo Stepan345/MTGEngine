@@ -1,5 +1,13 @@
 {
   "devDependencies": {
+    "@types/node": "^22.15.29",
     "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "main": "node dist/main.js"
+  },
+  "dependencies": {
+    "readline": "^1.3.0"
   }
 }

@@ -1,9 +1,9 @@
-import * as cards from "./cards/cards"
-import { Deck } from "./deck"
-import { ManaPool } from "./manaPool"
-import { Player } from "./player"
-import { Stack } from "./stack"
-import { Trigger,Card,Cards } from "./cards/cardParent"
+import * as cards from "./cards/cards.js"
+import { Deck } from "./deck.js"
+import { ManaPool } from "./manaPool.js"
+import { Player } from "./player.js"
+import { Stack } from "./stack.js"
+import { Trigger,Card,Cards } from "./cards/cardParent.js"
 enum Phases{
     "Untap" = 0,
     "Up-keep" = 1,
@@ -42,7 +42,7 @@ export class Game{
             });
             let deck:Deck = new Deck(cards)
             player.init(deck)
-            this.players.push()
+            this.players.push(player)
             this.battlefields.push([])
             this.graveyards.push([])
             this.exile.push([])
