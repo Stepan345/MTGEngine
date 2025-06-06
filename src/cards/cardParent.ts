@@ -27,6 +27,7 @@ export class Card{
     public owner:Player
     public targetRange:number[]
     public permanent:boolean
+    public targetablePermanents
     public constructor(
         name:string,
         owner:Player,

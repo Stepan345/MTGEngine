@@ -36,7 +36,10 @@ export class Client{
                         let cardID:number = parseInt(answer)
                         if(!Number.isNaN(cardID)){
                             let card:Card =  currentPlayer.hand[cardID]
-                            if(card.targetRange.length != 0){}
+                            if(card.targetRange.length != 0){
+                                
+                                this.game.battlefields
+                            }
                         }
                         else console.log("Passing priority...")
                     }
