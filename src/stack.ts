@@ -24,8 +24,8 @@ export class Stack{//God help us all
         return false
     }
     public addToStack(card:Card,isSpell:boolean,target:(Card | Player)[] = [],triggerType:Trigger = Trigger.none){
-        
         this.items.push([card,isSpell,triggerType,target])
+        this.game.lastEffectOnStack = this.game.priority
     }
     public resolveTop(){
         let effect:[Card,boolean,Trigger,(Card | Player)[]] | undefined = this.items.pop()
@@ -34,10 +34,13 @@ export class Stack{//God help us all
         if(effect[1]){
             //spell resolution
             card.spellAbility(effect[3])
-            this.game.notifySpellPlayed(card)
+            this.game.notify(card,Trigger.spellResolved)
+
         }else{
             //ability resolution
             card.resolveTrigger(effect[2],effect[3])
         }
+        this.game.lastEffectOnStack = this.game.activePlayer
+        console.log(`Resolved ${card.name} off the top of the stack`)
     }
 }

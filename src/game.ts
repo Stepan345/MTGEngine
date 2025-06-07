@@ -4,7 +4,7 @@ import { ManaPool } from "./manaPool.js"
 import { Player } from "./player.js"
 import { Stack } from "./stack.js"
 import { Trigger,Card,Cards } from "./cards/cardParent.js"
-enum Phases{
+export enum Phases{
     "Untap" = 0,
     "Up-keep" = 1,
     "Draw" = 2,
@@ -31,6 +31,14 @@ export class Game{
     public graveyards:Card[][] = []
     public exile:Card[][] = []
     public stack:Stack
+    public playerIsMakingDecision = false
+    /**
+     * **0**: Player that is making the decision  
+     * **1**: The card that this decision is about  
+     * **2**: Options corresponding to their respective resolveTrigger key  
+     */
+    public playerDecision:[Player,Card,Trigger[]]
+
     public constructor(players:number,life:number,decks:[number,Cards][][]){
         for(let i = 0; i<players;i++){
             let player:Player = new Player(life,this)
@@ -41,7 +49,7 @@ export class Game{
                 }
             });
             let deck:Deck = new Deck(cards)
-            player.init(deck)
+            player.init(deck,i)
             this.players.push(player)
             this.battlefields.push([])
             this.graveyards.push([])
@@ -52,7 +60,7 @@ export class Game{
     public startGame(){
         this.turn++
         this.currentPhase = Phases.Untap
-        this.phases[this.currentPhase]
+        this.phases[this.currentPhase]()
     }
     
     /**An array containing the functions that are called at the start of each step or phase*/
@@ -73,6 +81,7 @@ export class Game{
             })
             //add a special action for ordering triggers if there are any
             this.priority = this.activePlayer
+            this.lastEffectOnStack = this.activePlayer
         },
         ()=>{//draw
             if(this.turn != 0){
@@ -85,32 +94,36 @@ export class Game{
             })
             //add a special action for ordering triggers if there are any
             this.priority = this.activePlayer
+            this.lastEffectOnStack = this.activePlayer
         },
         ()=>{//precombat
             this.priority = this.activePlayer
+            this.lastEffectOnStack = this.activePlayer
         },
         ()=>{//combat
             this.priority = this.activePlayer
+            this.lastEffectOnStack = this.activePlayer
         },
         ()=>{//postcombat
             this.priority = this.activePlayer
+            this.lastEffectOnStack = this.activePlayer
         },
         ()=>{//end step
             this.priority = this.activePlayer
+            this.lastEffectOnStack = this.activePlayer
         },
         ()=>{//clean up
             //pass turn
             this.activePlayer = (this.activePlayer < this.players.length-1)?this.activePlayer+1:0
+            this.lastEffectOnStack = this.activePlayer
+            this.turn++
         }
     ]
     /**Proceeds to the next step or phase incrementing the active player and turn counter*/
     public nextPhase(){
-        this.currentPhase = (this.currentPhase<6)?this.currentPhase+1:0
-        this.activePlayer = (this.activePlayer < this.players.length-1)?this.activePlayer+1:0
+        this.currentPhase = (this.currentPhase<7)?this.currentPhase+1:0
         this.priority = this.activePlayer
-        this.turn++
         this.phases[this.currentPhase]()
-        
     }
 
     public passPriority(){
@@ -125,28 +138,34 @@ export class Game{
         }
     }
 
+    public checkBattlefield(playerID:number):string{
+        let permanents:string = "\n"
+        this.battlefields[playerID].forEach((permanent, i) =>{
+            permanents = permanents + `${i}: ${permanent.name}. ${(permanent.tapped)?"Tapped":"Untapped"}\n`
+        })
+        return permanents
+    }
+    public checkGraveyard(playerID:number):string{
+        let permanents:string = "\n"
+        this.graveyards[playerID].forEach((permanent, i) =>{
+            permanents = permanents + `${i}: ${permanent.name}.\n`
+        })
+        return permanents
+    }
 
+    public putInPlay(card:Card){
+        this.battlefields[card.owner.id].push(card)
+    }
+    public putInGraveyard(card:Card){
+        this.graveyards[card.originalOwner.id].push(card)
+        
+    }
     //////////////////////
-    public notifySpellPlayed(spell:Card){
+    public notify(spell:Card,trigger:Trigger){
         this.battlefields.forEach(battlefield => {
             battlefield.forEach(card => {
-                card.trigger(Trigger.otherSpellCast,spell)
-            });
-        });
-        if(spell.permanent){
-            this.battlefields.forEach(battlefield => {
-                battlefield.forEach(card => {
-                    card.trigger(Trigger.otherETB,spell)
-                });
-            });
-            this.battlefields[this.activePlayer].push(spell)
-            spell.trigger(Trigger.enterTheBattlefield,spell)
-        }
-        else{
-            this.graveyards[this.activePlayer].push(spell)
-        }
-    }
-    public notifyLandPlayed(land:Card){
-
+                card.trigger(trigger,spell)
+            })
+        })
     }
 }
