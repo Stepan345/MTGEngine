@@ -72,6 +72,9 @@ export class Game{
                 permanent.trigger(Trigger.untap,this.players[this.activePlayer])
             })
             this.nextPhase()
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//upkeep
             this.battlefields.forEach(battlefield =>{
@@ -80,8 +83,14 @@ export class Game{
                 })
             })
             //add a special action for ordering triggers if there are any
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
             this.priority = this.activePlayer
             this.lastEffectOnStack = this.activePlayer
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//draw
             if(this.turn != 0){
@@ -95,28 +104,51 @@ export class Game{
             //add a special action for ordering triggers if there are any
             this.priority = this.activePlayer
             this.lastEffectOnStack = this.activePlayer
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//precombat
             this.priority = this.activePlayer
             this.lastEffectOnStack = this.activePlayer
+
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//combat
             this.priority = this.activePlayer
             this.lastEffectOnStack = this.activePlayer
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//postcombat
             this.priority = this.activePlayer
             this.lastEffectOnStack = this.activePlayer
+
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//end step
             this.priority = this.activePlayer
             this.lastEffectOnStack = this.activePlayer
+
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
         },
         ()=>{//clean up
             //pass turn
             this.activePlayer = (this.activePlayer < this.players.length-1)?this.activePlayer+1:0
             this.lastEffectOnStack = this.activePlayer
+
+            this.players.forEach(player => {
+                player.manaPool.drain()
+            });
             this.turn++
+            this.nextPhase()
         }
     ]
     /**Proceeds to the next step or phase incrementing the active player and turn counter*/
